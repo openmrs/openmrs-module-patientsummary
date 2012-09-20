@@ -14,7 +14,8 @@
 	<require_version>${openMRSVersion}</require_version>
 
 	<require_modules>																										
-		<require_module version="0.7.2">org.openmrs.module.reporting</require_module>		
+		<require_module version="0.7.2">org.openmrs.module.reporting</require_module>
+		<require_module version="1.6.1">org.openmrs.module.htmlwidgets</require_module>		
 	</require_modules>
 
 	<activator>${project.parent.groupId}.${project.parent.artifactId}.PatientSummaryActivator</activator>
@@ -23,6 +24,28 @@
 		<point>org.openmrs.admin.list</point>
 		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList</class>
 	</extension>
+	
+	<extension>
+        <point>org.openmrs.patientDashboardTab</point>
+        <class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.PatientSummaryTab</class>
+    </extension>
+    
+    <!-- Global properties -->
+	<globalProperty>
+		<property>${project.parent.artifactId}.tabNameOrMessageCode</property>
+		<defaultValue>${project.parent.artifactId}.patientSummariesTabDefaultMessageCode</defaultValue>
+		<description>
+			The label to be used for the patient summary tab on the patient dashboard, it can be a message code or plain text
+		</description>
+	</globalProperty>
+	
+	<globalProperty>
+		<property>${project.parent.artifactId}.reportDesignUuids</property>
+		<defaultValue></defaultValue>
+		<description>
+			A comma separated list of uuids for report designs that can be run from the patient summary tab on the patient dashboard
+		</description>
+	</globalProperty>
 
 	<messages>
 		<lang>en</lang>

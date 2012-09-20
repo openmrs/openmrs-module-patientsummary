@@ -40,4 +40,13 @@
 		</property>
 	</bean>
 	
+	<!-- Module global property listeners -->
+	<bean id="patientsummaryEventListeners" parent="openmrsEventListeners">
+	    <property name="globalPropertyListeners">
+	        <list value-type="org.openmrs.api.GlobalPropertyListener">
+	            <bean class="org.openmrs.module.patientsummary.PatientSummaryUtil" />
+	        </list>
+	    </property>
+	</bean>
+	
 </beans>
