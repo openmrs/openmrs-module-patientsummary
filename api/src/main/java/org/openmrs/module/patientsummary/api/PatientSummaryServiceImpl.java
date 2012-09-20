@@ -21,6 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientsummary.PatientSummary;
+import org.openmrs.module.patientsummary.PatientSummaryReportDefinition;
 import org.openmrs.module.patientsummary.renderer.PatientSummaryReportRenderer;
 import org.openmrs.module.reporting.report.ReportDesign;
 import org.openmrs.module.reporting.report.service.ReportService;
@@ -57,8 +58,12 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
 	public List<PatientSummary> getAllPatientSummaries(boolean includeRetired) {
 		List<PatientSummary> l = new ArrayList<PatientSummary>();
 		for (ReportDesign d : getReportService().getAllReportDesigns(includeRetired)) {
-			if (PatientSummaryReportRenderer.class.isAssignableFrom(d.getRendererType())) {
-				l.add(new PatientSummary(d));
+			//If associated to a PatientDatasetDefinition
+			if (d.getReportDefinition().getDataSetDefinitions()
+			        .containsKey(PatientSummaryReportDefinition.DEFAULT_DATASET_KEY)) {
+				if (PatientSummaryReportRenderer.class.isAssignableFrom(d.getRendererType())) {
+					l.add(new PatientSummary(d));
+				}
 			}
 		}
 		return l;
@@ -69,5 +74,22 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
 	 */
 	protected ReportService getReportService() {
 		return Context.getService(ReportService.class);
+	}
+	
+	/**
+	 * @see org.openmrs.module.patientsummary.api.PatientSummaryService#getAllPatientSummaryDefinitions(boolean)
+	 */
+	@Override
+	public List<PatientSummaryReportDefinition> getAllPatientSummaryDefinitions(boolean includeRetired) {
+		List<PatientSummaryReportDefinition> l = new ArrayList<PatientSummaryReportDefinition>();
+		for (ReportDesign d : getReportService().getAllReportDesigns(includeRetired)) {
+			if (d.getReportDefinition().getDataSetDefinitions()
+			        .containsKey(PatientSummaryReportDefinition.DEFAULT_DATASET_KEY)) {
+				if (PatientSummaryReportRenderer.class.isAssignableFrom(d.getRendererType())) {
+					l.add(new PatientSummaryReportDefinition(d));
+				}
+			}
+		}
+		return l;
 	}
 }

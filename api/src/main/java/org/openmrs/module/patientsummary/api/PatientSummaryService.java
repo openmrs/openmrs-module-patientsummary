@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.patientsummary.PatientSummary;
+import org.openmrs.module.patientsummary.PatientSummaryReportDefinition;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -41,5 +42,11 @@ public interface PatientSummaryService extends OpenmrsService {
 	 */
 	@Transactional(readOnly = true)
 	public List<PatientSummary> getAllPatientSummaries(boolean includeRetired);
-
+	
+	/**
+	 * @return all {@link PatientSummaryReportDefinition}s
+	 */
+	@Transactional(readOnly = true)
+	public List<PatientSummaryReportDefinition> getAllPatientSummaryDefinitions(boolean includeRetired);
+	
 }
