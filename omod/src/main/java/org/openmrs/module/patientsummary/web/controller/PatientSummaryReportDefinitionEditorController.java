@@ -27,9 +27,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.htmlwidgets.web.html.Option;
 import org.openmrs.module.patientsummary.PatientSummaryReportDefinition;
 import org.openmrs.module.patientsummary.api.PatientSummaryService;
-import org.openmrs.module.reporting.dataset.definition.DataSetDefinition;
 import org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition;
-import org.openmrs.module.reporting.evaluation.parameter.Mapped;
 import org.openmrs.module.reporting.report.ReportDesign;
 import org.openmrs.module.reporting.report.definition.service.ReportDefinitionService;
 import org.openmrs.module.reporting.report.service.ReportService;
@@ -81,7 +79,7 @@ public class PatientSummaryReportDefinitionEditorController {
 			rd = new PatientSummaryReportDefinition();
 		}
 		
-		if (designs != null)
+		if (designs == null)
 			designs = new ArrayList<ReportDesign>();
 		
 		model.addAttribute("report", rd);
@@ -244,6 +242,8 @@ public class PatientSummaryReportDefinitionEditorController {
 		if (rd == null) {
 			log.error("No patient summary report definiton was found with a uuid matching " + reportUuid);
 			session.setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "patientSummary.error.patientDefinitonNotFound");
+			if (getFromSession(session) != null)
+				removeFromSession(session);
 			
 			return PATIENT_SUMMARY_REPORT_DEF_LISTING;
 		}
@@ -253,8 +253,7 @@ public class PatientSummaryReportDefinitionEditorController {
 		//This should update the uuid on the summary report definition to reference
 		//the patient dataset we have created above
 		if (needToUpdateSummary) {
-			rd.getDataSetDefinitions().put(PatientSummaryReportDefinition.DEFAULT_DATASET_KEY,
-			    new Mapped<DataSetDefinition>(pdsd, null));
+			rd.getPatientDataSetDefinition().setUuid(pdsd.getUuid());
 			Context.getService(ReportDefinitionService.class).saveDefinition(rd);
 		}
 		
