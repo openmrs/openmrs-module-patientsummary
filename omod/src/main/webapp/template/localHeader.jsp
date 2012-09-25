@@ -15,6 +15,11 @@
             <spring:message code="patientsummary.generate"/>
         </a>
     </li>
+    <li <c:if test='<%= request.getRequestURI().contains("/patientSummaryReportDefinitions") %>'>class="active"</c:if>>
+        <a href="${pageContext.request.contextPath}/module/patientsummary/patientSummaryReportDefinitions.list">
+            <spring:message code="patientsummary.managePatientSummaryReportDefinitions"/>
+        </a>
+    </li>
 	
 	<!-- Add further links here -->
 </ul>
