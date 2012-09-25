@@ -10,4 +10,10 @@
             <spring:message code="patientsummary.manage" />
         </a>
 	</li>
+	
+	<li <c:if test='<%= request.getRequestURI().contains("/listAll") %>'>class="active"</c:if>>
+		<a href="${pageContext.request.contextPath}/module/patientsummary/listAllSummaries.form">
+            <spring:message code="patientsummary.listAllSummaries" />
+        </a>
+	</li>
 </ul>
