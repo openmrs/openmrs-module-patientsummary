@@ -14,6 +14,8 @@
 package org.openmrs.module.patientsummary;
 
 
+import java.io.InputStream;
+
 import org.apache.commons.logging.Log; 
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.BaseModuleActivator;

@@ -68,4 +68,11 @@ public interface PatientSummaryService extends OpenmrsService {
 	 */
 	@Transactional(readOnly = true)
 	public PatientSummaryResult evaluatePatientSummary(PatientSummary summary, Integer patientId, Map<String, Object> parameters);
+
+	/**
+     * Purges the given report definition.
+     * 
+     * @param reportDefinition
+     */
+    public void purgeReportDefinition(PatientSummaryReportDefinition reportDefinition);
 }

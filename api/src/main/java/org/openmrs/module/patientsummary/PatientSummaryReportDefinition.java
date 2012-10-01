@@ -13,7 +13,6 @@
  */
 package org.openmrs.module.patientsummary;
 
-import org.openmrs.module.reporting.ReportingException;
 import org.openmrs.module.reporting.common.Localized;
 import org.openmrs.module.reporting.dataset.definition.DataSetDefinition;
 import org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition;
@@ -36,7 +35,7 @@ public class PatientSummaryReportDefinition extends ReportDefinition {
 	 */
 	public PatientSummaryReportDefinition() {
 		super();
-		addDataSetDefinition(DEFAULT_DATASET_KEY, new PatientDataSetDefinition(), null);
+		addDataSetDefinition(DEFAULT_DATASET_KEY, new Mapped<DataSetDefinition>(new PatientDataSetDefinition(), null));
 	}
 	
 	/**
@@ -44,15 +43,19 @@ public class PatientSummaryReportDefinition extends ReportDefinition {
 	 */
 	@Override
 	public void addDataSetDefinition(String key, Mapped<? extends DataSetDefinition> definition) {
-		if (definition != null && definition.getParameterizable() instanceof PatientSummaryReportDefinition && 
-			(getDataSetDefinitions().isEmpty() || (getDataSetDefinitions().size() == 1 && getDataSetDefinitions().containsKey(key)))) {
+		if (!(definition.getParameterizable() instanceof PatientDataSetDefinition)) {
+			throw new PatientSummaryException("Only PatientDataSetDefinition can be added");
+		} else if (getDataSetDefinitions().size() > 1) {
+			throw new PatientSummaryException(
+			        "Cannot add more than one PatientDataSetDefinition");
+		} else if (getDataSetDefinitions().size() == 1 && !getDataSetDefinitions().containsKey(key)) {
+			throw new PatientSummaryException(
+			        "Cannot add PatientDataSetDefinition, becuase PatientSummarReportDefinition contains non patient definition");
+		} else {
 			getDataSetDefinitions().put(key, definition);
 		}
-		else {
-			throw new ReportingException("Cannot add more than one PatientDataSetDefinition to a PatientSummaryReportDefinition");
-		}
 	}
-
+	
 	/**
 	 * @return the underlying PatientDataSetDefinition
 	 */

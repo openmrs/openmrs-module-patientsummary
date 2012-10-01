@@ -159,4 +159,12 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
 	protected ReportService getReportService() {
 		return Context.getService(ReportService.class);
 	}
+
+	/**
+     * @see org.openmrs.module.patientsummary.api.PatientSummaryService#purgeReportDefinition(org.openmrs.module.patientsummary.PatientSummaryReportDefinition)
+     */
+    @Override
+    public void purgeReportDefinition(PatientSummaryReportDefinition reportDefinition) {
+    	getReportDefinitionService().purgeDefinition(reportDefinition);
+    }
 }

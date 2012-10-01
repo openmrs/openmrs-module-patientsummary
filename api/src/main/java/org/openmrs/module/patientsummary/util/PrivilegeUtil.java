@@ -20,4 +20,6 @@ public class PrivilegeUtil {
 	
 	//**** PRIVILEGE CONSTANTS *****
 	public static final String PRIV_VIEW_PATIENT_SUMMARIES = "View Patient Summaries";
+	
+	public static final String PRIV_MANAGE_PATIENT_SUMMARIES = "Manage Patient Summaries";
 }
