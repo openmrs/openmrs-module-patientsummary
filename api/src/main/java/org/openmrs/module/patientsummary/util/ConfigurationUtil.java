@@ -22,7 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.patientsummary.PatientSummary;
+import org.openmrs.module.patientsummary.PatientSummaryTemplate;
 import org.openmrs.module.patientsummary.api.PatientSummaryService;
 import org.openmrs.util.OpenmrsUtil;
 
@@ -73,13 +73,13 @@ public class ConfigurationUtil {
 	 * 
 	 * @return the text or message code
 	 */
-	public static List<PatientSummary> getPatientSummariesForDashboard() {
-		List<PatientSummary> ret = new ArrayList<PatientSummary>();
+	public static List<PatientSummaryTemplate> getPatientSummaryTemplatesForDashboard() {
+		List<PatientSummaryTemplate> ret = new ArrayList<PatientSummaryTemplate>();
 		String gpValue = Context.getAdministrationService().getGlobalProperty(GP_REPORT_DESIGN_UUIDS);
 		if (StringUtils.isNotBlank(gpValue)) {
 			String[] uuids = StringUtils.split(gpValue, ",");
 			for (String uuid : uuids) {
-				PatientSummary ps = Context.getService(PatientSummaryService.class).getPatientSummaryByUuid(uuid);
+				PatientSummaryTemplate ps = Context.getService(PatientSummaryService.class).getPatientSummaryTemplateByUuid(uuid);
 				if (ps != null) {
 					ret.add(ps);
 				}
@@ -93,10 +93,10 @@ public class ConfigurationUtil {
 	
 	/**
 	 * 
-	 * @param patientSummary the summary to add to the patient dashboard
+	 * @param patientSummaryTemplate the summary to add to the patient dashboard
 	 * @param position 0-index position to add the patient summary to, if null will add to the end
 	 */
-	public static void addPatientSummaryToDashboard(PatientSummary patientSummary, Integer position) {
+	public static void addPatientSummaryTemplateToDashboard(PatientSummaryTemplate patientSummary, Integer position) {
 		GlobalProperty gp = Context.getAdministrationService().getGlobalPropertyObject(GP_REPORT_DESIGN_UUIDS);
 		if (gp == null) {
 			gp = new GlobalProperty(GP_REPORT_DESIGN_UUIDS);

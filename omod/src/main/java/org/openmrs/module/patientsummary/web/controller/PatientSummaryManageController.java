@@ -24,7 +24,7 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.patientsummary.PatientSummary;
+import org.openmrs.module.patientsummary.PatientSummaryTemplate;
 import org.openmrs.module.patientsummary.PatientSummaryReportDefinition;
 import org.openmrs.module.patientsummary.PatientSummaryResult;
 import org.openmrs.module.patientsummary.api.PatientSummaryService;
@@ -45,7 +45,7 @@ public class PatientSummaryManageController {
 	@RequestMapping(value = "/module/" + ConfigurationUtil.MODULE_ID + "/manageSummaries")
 	public void manageSummaries(ModelMap model, @RequestParam(required=false, value="includeRetired") boolean includeRetired) {
 		
-		List<PatientSummary> summaries = getService().getAllPatientSummaries(includeRetired);
+		List<PatientSummaryTemplate> summaries = getService().getAllPatientSummaryTemplates(includeRetired);
 		List<PatientSummaryReportDefinition> schemas = getService().getAllPatientSummaryReportDefinitions(includeRetired);
 		
 		model.addAttribute("summaries", summaries);
@@ -57,10 +57,10 @@ public class PatientSummaryManageController {
 	 */
 	@RequestMapping("/module/" + ConfigurationUtil.MODULE_ID + "/purgeSummary")
 	public String purgeSummary(@RequestParam("uuid") String uuid) {
-		PatientSummary patientSummary = getService().getPatientSummaryByUuid(uuid);
+		PatientSummaryTemplate patientSummary = getService().getPatientSummaryTemplateByUuid(uuid);
 		PatientSummaryReportDefinition reportDefinition = patientSummary.getReportDefinition();
-		getService().purgePatientSummary(patientSummary);
-		if (getService().getPatientSummaries(reportDefinition, true).isEmpty()) {
+		getService().purgePatientSummaryTemplate(patientSummary);
+		if (getService().getPatientSummaryTemplates(reportDefinition, true).isEmpty()) {
 			getService().purgePatientSummaryReportDefinition(reportDefinition);
 		}
 		return "redirect:manageSummaries.list";
@@ -78,8 +78,8 @@ public class PatientSummaryManageController {
 							  @RequestParam(value="download",required=false) boolean download) throws IOException {		
 		try {
 			PatientSummaryService pss = Context.getService(PatientSummaryService.class);
-			PatientSummary ps = pss.getPatientSummary(summaryId);
-			PatientSummaryResult result = pss.evaluatePatientSummary(ps, patientId, new HashMap<String, Object>());
+			PatientSummaryTemplate ps = pss.getPatientSummaryTemplate(summaryId);
+			PatientSummaryResult result = pss.evaluatePatientSummaryTemplate(ps, patientId, new HashMap<String, Object>());
 			if (result.getErrorDetails() != null) {
 				result.getErrorDetails().printStackTrace(response.getWriter());
 			} 
@@ -103,8 +103,8 @@ public class PatientSummaryManageController {
 					   @RequestParam(required=false, value="patientId") Integer patientId) throws Exception {
 		
 		PatientSummaryService pss = Context.getService(PatientSummaryService.class);
-		List<PatientSummary> patientSummaries = pss.getAllPatientSummaries(false);
-		PatientSummary summaryToPreview = (summaryId == null ? null :  pss.getPatientSummary(summaryId));
+		List<PatientSummaryTemplate> patientSummaries = pss.getAllPatientSummaryTemplates(false);
+		PatientSummaryTemplate summaryToPreview = (summaryId == null ? null :  pss.getPatientSummaryTemplate(summaryId));
 
 		model.addAttribute("patientSummaries", patientSummaries);
 		model.addAttribute("summaryToPreview", summaryToPreview);
@@ -117,8 +117,8 @@ public class PatientSummaryManageController {
 		}
 		
 		if (summaryToPreview != null && patientId != null) {
-			PatientSummary ps = pss.getPatientSummary(summaryId);
-			PatientSummaryResult result = pss.evaluatePatientSummary(ps, patientId, new HashMap<String, Object>());
+			PatientSummaryTemplate ps = pss.getPatientSummaryTemplate(summaryId);
+			PatientSummaryResult result = pss.evaluatePatientSummaryTemplate(ps, patientId, new HashMap<String, Object>());
 			model.addAttribute("generatedSummary", new String(result.getRawContents(), "UTF-8"));
 			errorDetails = ObjectUtils.toString(result.getErrorDetails());
 		}

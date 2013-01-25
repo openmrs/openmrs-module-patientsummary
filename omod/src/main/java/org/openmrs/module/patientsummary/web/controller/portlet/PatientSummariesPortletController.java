@@ -19,7 +19,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.openmrs.module.patientsummary.PatientSummary;
+import org.openmrs.module.patientsummary.PatientSummaryTemplate;
 import org.openmrs.module.patientsummary.util.ConfigurationUtil;
 import org.openmrs.util.OpenmrsClassLoader;
 import org.openmrs.web.controller.PortletController;
@@ -39,7 +39,7 @@ public class PatientSummariesPortletController extends PortletController {
 	@Override
 	protected void populateModel(HttpServletRequest request, Map<String, Object> model) {
 		Thread.currentThread().setContextClassLoader(OpenmrsClassLoader.getInstance());
-		List<PatientSummary> patientSummaries = ConfigurationUtil.getPatientSummariesForDashboard();
+		List<PatientSummaryTemplate> patientSummaries = ConfigurationUtil.getPatientSummaryTemplatesForDashboard();
 		model.put("patientSummaries", patientSummaries);
 		if (patientSummaries.size() > 0) {
 			model.put("defaultSummary", patientSummaries.get(0));

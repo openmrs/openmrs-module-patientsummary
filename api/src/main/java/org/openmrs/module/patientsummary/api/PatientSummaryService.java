@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.patientsummary.PatientSummary;
+import org.openmrs.module.patientsummary.PatientSummaryTemplate;
 import org.openmrs.module.patientsummary.PatientSummaryReportDefinition;
 import org.openmrs.module.patientsummary.PatientSummaryResult;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,37 +52,37 @@ public interface PatientSummaryService extends OpenmrsService {
     public void purgePatientSummaryReportDefinition(PatientSummaryReportDefinition reportDefinition);
 	
 	/** 
-	 * Return all the PatientSummaries for a given PatientSummaryReportDefinition
+	 * Return all the {@link PatientSummaryTemplate}s for a given PatientSummaryReportDefinition
 	 */
-	public List<PatientSummary> getPatientSummaries(PatientSummaryReportDefinition reportDefinition, boolean includeRetired);
+	public List<PatientSummaryTemplate> getPatientSummaryTemplates(PatientSummaryReportDefinition reportDefinition, boolean includeRetired);
 	
 	/**
-	 * @return the PatientSummary referenced by the passed id
-	 */
-	@Transactional(readOnly = true)
-	public PatientSummary getPatientSummary(Integer id);
-	
-	/**
-	 * @return the PatientSummary with the given uuid
+	 * @return the {@link PatientSummaryTemplate} referenced by the passed id
 	 */
 	@Transactional(readOnly = true)
-	public PatientSummary getPatientSummaryByUuid(String uuid);
+	public PatientSummaryTemplate getPatientSummaryTemplate(Integer id);
 	
 	/**
-	 * @return all {@link PatientSummary}s
+	 * @return the {@link PatientSummaryTemplate} with the given uuid
 	 */
 	@Transactional(readOnly = true)
-	public List<PatientSummary> getAllPatientSummaries(boolean includeRetired);
+	public PatientSummaryTemplate getPatientSummaryTemplateByUuid(String uuid);
 	
 	/**
-	 * @return the resulting patient summary result from evaluating the passed patient summary for the given patient and parameters
+	 * @return all {@link PatientSummaryTemplate}s
 	 */
 	@Transactional(readOnly = true)
-	public PatientSummaryResult evaluatePatientSummary(PatientSummary summary, Integer patientId, Map<String, Object> parameters);
+	public List<PatientSummaryTemplate> getAllPatientSummaryTemplates(boolean includeRetired);
 	
 	/**
-     * Purges the passed PatientSummary from the database
+	 * @return the resulting patient summary result from evaluating the passed patient summary template for the given patient and parameters
+	 */
+	@Transactional(readOnly = true)
+	public PatientSummaryResult evaluatePatientSummaryTemplate(PatientSummaryTemplate summary, Integer patientId, Map<String, Object> parameters);
+	
+	/**
+     * Purges the passed {@link PatientSummaryTemplate} from the database
      */
 	@Transactional
-    public void purgePatientSummary(PatientSummary patientSummary);
+    public void purgePatientSummaryTemplate(PatientSummaryTemplate patientSummary);
 }

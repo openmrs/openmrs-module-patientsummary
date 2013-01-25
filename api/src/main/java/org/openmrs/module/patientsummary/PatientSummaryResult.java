@@ -22,7 +22,7 @@ public class PatientSummaryResult {
 	
 	//***** PROPERTIES *****
 	
-	private PatientSummary summary;
+	private PatientSummaryTemplate summaryTemplate;
 	private Integer patientId;
 	private Map<String, Object> parameters;
 	private String contentType;
@@ -34,8 +34,8 @@ public class PatientSummaryResult {
 	/**
 	 * Default constructor
 	 */
-	public PatientSummaryResult(PatientSummary summary, Integer patientId, Map<String, Object> parameters) {
-		this.summary = summary;
+	public PatientSummaryResult(PatientSummaryTemplate summary, Integer patientId, Map<String, Object> parameters) {
+		this.summaryTemplate = summary;
 		this.patientId = patientId;
 		this.parameters = parameters;
 	}
@@ -43,17 +43,17 @@ public class PatientSummaryResult {
 	//***** PROPERTY ACCESS *****
 
 	/**
-	 * @return the summary
+	 * @return the summary template
 	 */
-	public PatientSummary getSummary() {
-		return summary;
+	public PatientSummaryTemplate getSummaryTemplate() {
+		return summaryTemplate;
 	}
 
 	/**
-	 * @param summary the summary to set
+	 * @param summaryTemplate the summary template to set
 	 */
-	public void setSummary(PatientSummary summary) {
-		this.summary = summary;
+	public void setSummaryTemplate(PatientSummaryTemplate summaryTemplate) {
+		this.summaryTemplate = summaryTemplate;
 	}
 
 	/**

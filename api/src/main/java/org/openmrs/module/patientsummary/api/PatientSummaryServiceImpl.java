@@ -24,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Cohort;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.patientsummary.PatientSummary;
+import org.openmrs.module.patientsummary.PatientSummaryTemplate;
 import org.openmrs.module.patientsummary.PatientSummaryReportDefinition;
 import org.openmrs.module.patientsummary.PatientSummaryResult;
 import org.openmrs.module.reporting.evaluation.EvaluationContext;
@@ -82,54 +82,54 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
     }
     
 	/**
-	 * @see PatientSummaryService#getPatientSummaries(ReportDefinition, boolean)
+	 * @see PatientSummaryService#getPatientSummaryTemplates(ReportDefinition, boolean)
 	 */
 	@Override
-	public List<PatientSummary> getPatientSummaries(PatientSummaryReportDefinition reportDefinition, boolean includeRetired) {
-		List<PatientSummary> ret = new ArrayList<PatientSummary>();
+	public List<PatientSummaryTemplate> getPatientSummaryTemplates(PatientSummaryReportDefinition reportDefinition, boolean includeRetired) {
+		List<PatientSummaryTemplate> ret = new ArrayList<PatientSummaryTemplate>();
 		for (ReportDesign d : getReportService().getReportDesigns(reportDefinition, null, includeRetired)) {
-			ret.add(new PatientSummary(d));
+			ret.add(new PatientSummaryTemplate(d));
 		}
 		return ret;
 	}
 
 	/**
-	 * @see PatientSummaryService#getPatientSummary(Integer)
+	 * @see PatientSummaryService#getPatientSummaryTemplate(Integer)
 	 */
 	@Override
-	public PatientSummary getPatientSummary(Integer id) {
+	public PatientSummaryTemplate getPatientSummaryTemplate(Integer id) {
 		ReportDesign d = getReportService().getReportDesign(id);
-		return new PatientSummary(d);
+		return new PatientSummaryTemplate(d);
 	}
 
 	/**
-	 * @see PatientSummaryService#getPatientSummaryByUuid(String)
+	 * @see PatientSummaryService#getPatientSummaryTemplateByUuid(String)
 	 */
 	@Override
-	public PatientSummary getPatientSummaryByUuid(String uuid) {
+	public PatientSummaryTemplate getPatientSummaryTemplateByUuid(String uuid) {
 		ReportDesign d = getReportService().getReportDesignByUuid(uuid);
-		return new PatientSummary(d);
+		return new PatientSummaryTemplate(d);
 	}
 
 	/**
-	 * @see PatientSummaryService#getAllPatientSummaries(boolean)
+	 * @see PatientSummaryService#getAllPatientSummaryTemplates(boolean)
 	 */
 	@Override
-	public List<PatientSummary> getAllPatientSummaries(boolean includeRetired) {
-		List<PatientSummary> l = new ArrayList<PatientSummary>();
+	public List<PatientSummaryTemplate> getAllPatientSummaryTemplates(boolean includeRetired) {
+		List<PatientSummaryTemplate> l = new ArrayList<PatientSummaryTemplate>();
 		for (ReportDesign d : getReportService().getAllReportDesigns(includeRetired)) {
 			if (d.getReportDefinition() instanceof PatientSummaryReportDefinition) {
-				l.add(new PatientSummary(d));
+				l.add(new PatientSummaryTemplate(d));
 			}
 		}
 		return l;
 	}
 	
 	/**
-	 * @see PatientSummaryService#evaluatePatientSummary(PatientSummary, Integer, Map)
+	 * @see PatientSummaryService#evaluatePatientSummaryTemplate(PatientSummaryTemplate, Integer, Map)
 	 */
 	@Override
-	public PatientSummaryResult evaluatePatientSummary(PatientSummary summary, Integer patientId, Map<String, Object> parameters) {
+	public PatientSummaryResult evaluatePatientSummaryTemplate(PatientSummaryTemplate summary, Integer patientId, Map<String, Object> parameters) {
 		PatientSummaryResult result = new PatientSummaryResult(summary, patientId, parameters);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
@@ -168,10 +168,10 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
 	}
 	
 	/**
-     * @see PatientSummaryService#purgePatientSummary(PatientSummary)
+     * @see PatientSummaryService#purgePatientSummaryTemplate(PatientSummaryTemplate)
      */
     @Override
-    public void purgePatientSummary(PatientSummary patientSummary) {
+    public void purgePatientSummaryTemplate(PatientSummaryTemplate patientSummary) {
     	getReportService().purgeReportDesign(patientSummary.getReportDesign());
     }
 

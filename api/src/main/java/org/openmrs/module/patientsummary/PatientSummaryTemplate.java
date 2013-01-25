@@ -19,9 +19,9 @@ import org.openmrs.module.reporting.report.ReportDesign;
 import org.openmrs.module.reporting.report.renderer.ReportRenderer;
 
 /**
- * Represents a particular Patient Summary
+ * Represents a particular Patient Summary Template
  */
-public class PatientSummary {
+public class PatientSummaryTemplate {
 	
 	protected final Log log = LogFactory.getLog(this.getClass());
 	
@@ -34,12 +34,12 @@ public class PatientSummary {
 	/**
 	 * Default constructor
 	 */
-	public PatientSummary() {}
+	public PatientSummaryTemplate() {}
 	
 	/**
 	 * Full Constructor
 	 */
-	public PatientSummary(ReportDesign reportDesign) {
+	public PatientSummaryTemplate(ReportDesign reportDesign) {
 		this.reportDesign = reportDesign;
 	}
 	
@@ -106,8 +106,8 @@ public class PatientSummary {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (o != null && o instanceof PatientSummary) {
-			PatientSummary that = (PatientSummary)o;
+		if (o != null && o instanceof PatientSummaryTemplate) {
+			PatientSummaryTemplate that = (PatientSummaryTemplate)o;
 			if (this.getReportDesign() != null && that.getReportDesign() != null) {
 				return this.getReportDesign().equals(that.getReportDesign());
 			}
