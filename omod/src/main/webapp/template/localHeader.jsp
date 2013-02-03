@@ -7,7 +7,7 @@
     </li>
 	<li <c:if test='<%= request.getRequestURI().contains("/manageSummaries") %>'>class="active"</c:if>>
 		<a href="${pageContext.request.contextPath}/module/patientsummary/manageSummaries.form">
-            <spring:message code="patientsummary.manageSummaries" />
+            <spring:message code="patientsummary.listAll.title" />
         </a>
 	</li>
 	<li <c:if test='<%= request.getRequestURI().contains("/previewSummaries") %>'>class="active"</c:if>>
