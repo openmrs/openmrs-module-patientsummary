@@ -14,6 +14,7 @@
 package org.openmrs.module.patientsummary.web.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,9 +25,9 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.patientsummary.PatientSummaryTemplate;
 import org.openmrs.module.patientsummary.PatientSummaryReportDefinition;
 import org.openmrs.module.patientsummary.PatientSummaryResult;
+import org.openmrs.module.patientsummary.PatientSummaryTemplate;
 import org.openmrs.module.patientsummary.api.PatientSummaryService;
 import org.openmrs.module.patientsummary.util.ConfigurationUtil;
 import org.springframework.stereotype.Controller;
@@ -45,11 +46,16 @@ public class PatientSummaryManageController {
 	@RequestMapping(value = "/module/" + ConfigurationUtil.MODULE_ID + "/manageSummaries")
 	public void manageSummaries(ModelMap model, @RequestParam(required=false, value="includeRetired") boolean includeRetired) {
 		
-		List<PatientSummaryTemplate> summaries = getService().getAllPatientSummaryTemplates(includeRetired);
-		List<PatientSummaryReportDefinition> schemas = getService().getAllPatientSummaryReportDefinitions(includeRetired);
+		List<PatientSummary> patientSummaries = new ArrayList<PatientSummary>();
 		
-		model.addAttribute("summaries", summaries);
-		model.addAttribute("schemas", schemas);
+		List<PatientSummaryReportDefinition> patientSummaryDefinitions = getService().getAllPatientSummaryReportDefinitions(includeRetired);
+		for (PatientSummaryReportDefinition psd : patientSummaryDefinitions) {
+			PatientSummary summary = new PatientSummary(psd.getUuid(), psd.getName(), psd.getDescription());
+			summary.setTemplates(getService().getPatientSummaryTemplates(psd, includeRetired));
+			patientSummaries.add(summary);
+		}
+		
+		model.addAttribute("summaries", patientSummaries);
 	}
 	
 	/**
@@ -129,5 +135,52 @@ public class PatientSummaryManageController {
 	
 	private PatientSummaryService getService() {
 		return Context.getService(PatientSummaryService.class);
+	}
+	
+	
+	public class PatientSummary {
+		private String uuid;
+		private String name;
+		private String description;
+		private List<PatientSummaryTemplate> templates;
+		
+        public PatientSummary(String uuid, String name, String description) {
+	        super();
+	        this.uuid = uuid;
+	        this.name = name;
+	        this.description = description;
+        }
+
+		public String getUuid() {
+        	return uuid;
+        }
+		
+        public void setUuid(String uuid) {
+        	this.uuid = uuid;
+        }
+		
+        public String getName() {
+        	return name;
+        }
+		
+        public void setName(String name) {
+        	this.name = name;
+        }
+		
+        public String getDescription() {
+        	return description;
+        }
+		
+        public void setDescription(String description) {
+        	this.description = description;
+        }
+		
+        public List<PatientSummaryTemplate> getTemplates() {
+        	return templates;
+        }
+		
+        public void setTemplates(List<PatientSummaryTemplate> templates) {
+        	this.templates = templates;
+        }
 	}
 }

@@ -33,6 +33,7 @@
 		<input name="name" value="${template.reportDesign.name}"/><br />
 		<span class="metadataField">Type:</span>
 		<wgt:widget id="rendererType" name="rendererType" object="${template.reportDesign}" property="rendererType" attributes="type=org.openmrs.module.reporting.report.renderer.ReportRenderer|simple=true"/>
+		<br/><input type="checkbox" name="enableOnPatientDashboard" <c:if test="${enableOnPatientDashboard}">checked</c:if> ><spring:message code="patientsummary.enableOnPatientDashboard"/>
 	</div>
 	
 	<br/>

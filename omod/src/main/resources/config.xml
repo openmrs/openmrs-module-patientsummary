@@ -40,7 +40,7 @@
 	</globalProperty>
 	
 	<globalProperty>
-		<property>${project.parent.artifactId}.reportDesignUuids</property>
+		<property>${project.parent.artifactId}.patientDashboardSummaries</property>
 		<defaultValue></defaultValue>
 		<description>
 			A comma separated list of uuids for report designs that can be run from the patient summary tab on the patient dashboard

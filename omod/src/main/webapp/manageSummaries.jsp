@@ -37,42 +37,25 @@
 				<tr>
 					<th><spring:message code="patientsummary.summarySchemaName"/></th>
 					<th><spring:message code="patientsummary.summaryViewName"/></th>
-					<th><spring:message code="general.creator"/></th>
-					<th><spring:message code="general.dateCreated"/></th>
-					<th align="center" width="1%"><spring:message code="patientsummary.actions"/></th>
+					<th><spring:message code="general.description"/></th>
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${schemas}" var="schema" varStatus="schemaStatus">
 					<c:forEach items="${summaries}" var="summary" varStatus="summaryStatus">
-						<c:if test="${schema == summary.reportDesign.reportDefinition}">
 							<tr>
 								<td width="20%" nowrap>
-									${summary.reportDesign.reportDefinition.name}
+									<a href="${pageContext.request.contextPath}/module/patientsummary/patientSummaryReportDefinitionEditor.form?uuid=${summary.uuid}">${summary.name}</a>
 								</td>
 								<td width="20%">
-									${summary.reportDesign.name}
+									<c:forEach items="${summary.templates}" var="template" varStatus="templateStatus">
+										<a href="${pageContext.request.contextPath}/module/patientsummary/templateEditor.form?templateUuid=${template.uuid}">${template.name}</a> <br/>
+									</c:forEach>
 								</td>
-								<td width="5%" nowrap>
-									${summary.reportDesign.creator}
-								</td>
-								<td width="5%" nowrap>
-									<rpt:timespan then="${summary.reportDesign.dateCreated}"/>
-								</td>
-								<td width="1%" align="center" nowrap>
-									&nbsp;
-									<a href="${pageContext.request.contextPath}/module/patientsummary/editSummary.form?uuid=${summary.uuid}"><img src="<c:url value='/images/edit.gif'/>" border="0"/></a>
-									&nbsp;
-									<a href="javascript:confirmDelete(escape('${schema.name}'), escape('${summary.name}'),'${summary.uuid}');"><img src="<c:url value='/images/trash.gif'/>" border="0"/></a>
-									&nbsp;
-									<a href="${pageContext.request.contextPath}/module/patientsummary/previewSummaries.form?summaryId=${summary.id}">
-										<img src='<c:url value="/images/play.gif"/>' align="absmiddle" border="0"/>
-									</a>	
+								<td width="40%" nowrap>
+									${summary.description}
 								</td>
 							</tr>
-						</c:if>
-					</c:forEach>
-				</c:forEach>	
+					</c:forEach>	
 			</tbody>
 			<tfoot></tfoot>
 		</table>
