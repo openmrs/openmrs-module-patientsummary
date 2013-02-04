@@ -1,0 +1,5 @@
+<% 	dataset = reportData.dataSets.get("encounters");
+	colValue = dataset.iterator().next().getColumnValue("encounter").getEncounterDatetime();
+	colValue = util.format(colValue, "dd-MMM-yyyy");
+%>
+First Encounter on $colValue
