@@ -22,6 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientsummary.PatientSummaryConstants;
 import org.openmrs.module.patientsummary.PatientSummaryTemplate;
 import org.openmrs.module.patientsummary.api.PatientSummaryService;
 import org.openmrs.util.OpenmrsUtil;
@@ -37,7 +38,6 @@ public class ConfigurationUtil {
 	public static final String MODULE_ID = "patientsummary";
 	public static final String DEFAULT_TAB_NAME_OR_MSG_CODE = MODULE_ID + ".defaultTabNameMessageCode";
 	public static final String GP_PATIENT_SUMMARY_TAB_NAME = MODULE_ID + ".tabNameOrMessageCode";
-	public static final String GP_REPORT_DESIGN_UUIDS = MODULE_ID + ".reportDesignUuids";
 	
 	/**
 	 * Returns the label or message code for the patient summary tab as defined by the value of the
@@ -75,7 +75,7 @@ public class ConfigurationUtil {
 	 */
 	public static List<PatientSummaryTemplate> getPatientSummaryTemplatesForDashboard() {
 		List<PatientSummaryTemplate> ret = new ArrayList<PatientSummaryTemplate>();
-		String gpValue = Context.getAdministrationService().getGlobalProperty(GP_REPORT_DESIGN_UUIDS);
+		String gpValue = Context.getAdministrationService().getGlobalProperty(PatientSummaryConstants.GP_PATIENT_DASHBOARD_SUMMARIES);
 		if (StringUtils.isNotBlank(gpValue)) {
 			String[] uuids = StringUtils.split(gpValue, ",");
 			for (String uuid : uuids) {
@@ -84,7 +84,7 @@ public class ConfigurationUtil {
 					ret.add(ps);
 				}
 				else {
-					log.warn("Unable to find a Patient Summary with uuid " + uuid + ". Please check your " + GP_REPORT_DESIGN_UUIDS + " global property.");
+					log.warn("Unable to find a Patient Summary with uuid " + uuid + ". Please check your " + PatientSummaryConstants.GP_PATIENT_DASHBOARD_SUMMARIES + " global property.");
 				}
 			}
 		}
@@ -97,9 +97,9 @@ public class ConfigurationUtil {
 	 * @param position 0-index position to add the patient summary to, if null will add to the end
 	 */
 	public static void addPatientSummaryTemplateToDashboard(PatientSummaryTemplate patientSummary, Integer position) {
-		GlobalProperty gp = Context.getAdministrationService().getGlobalPropertyObject(GP_REPORT_DESIGN_UUIDS);
+		GlobalProperty gp = Context.getAdministrationService().getGlobalPropertyObject(PatientSummaryConstants.GP_PATIENT_DASHBOARD_SUMMARIES);
 		if (gp == null) {
-			gp = new GlobalProperty(GP_REPORT_DESIGN_UUIDS);
+			gp = new GlobalProperty(PatientSummaryConstants.GP_PATIENT_DASHBOARD_SUMMARIES);
 		}
 		String uuidToAdd = patientSummary.getReportDesign().getUuid();
 		List<String> uuids = new ArrayList<String>();

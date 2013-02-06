@@ -84,11 +84,15 @@ public class PatientSummaryManageController {
 	public void renderSummary(ModelMap model, HttpServletRequest request, HttpServletResponse response,
 							  @RequestParam("patientId") Integer patientId,                       
 							  @RequestParam("summaryId") Integer summaryId,
-							  @RequestParam(value="download",required=false) boolean download) throws IOException {		
+							  @RequestParam(value="download",required=false) boolean download,
+							  @RequestParam(value="print",required=false) boolean print) throws IOException {		
 		try {
 			PatientSummaryService pss = Context.getService(PatientSummaryService.class);
 			PatientSummaryTemplate ps = pss.getPatientSummaryTemplate(summaryId);
-			PatientSummaryResult result = pss.evaluatePatientSummaryTemplate(ps, patientId, new HashMap<String, Object>());
+			
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("patientSummaryMode", print ? "print" : "download");
+			PatientSummaryResult result = pss.evaluatePatientSummaryTemplate(ps, patientId, parameters);
 			if (result.getErrorDetails() != null) {
 				result.getErrorDetails().printStackTrace(response.getWriter());
 			} 
@@ -97,6 +101,10 @@ public class PatientSummaryManageController {
 					response.setHeader("Content-Type", ps.getContentType());
 					response.setHeader("Content-Disposition", "attachment; filename=\"" + ps.getExportFilename() + "\"");
 				}
+				else if (print) {
+					response.setHeader("Content-Type", ps.getContentType());
+				}
+				
 				response.setContentType(ps.getContentType());
 				response.getOutputStream().write(result.getRawContents());
 			}

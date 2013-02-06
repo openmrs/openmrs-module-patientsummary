@@ -58,6 +58,9 @@
 			<button onclick="document.location.href='<openmrs:contextPath />/module/patientsummary/renderSummary.form?download=true&patientId=${model.patientId}&summaryId=${ps.id}';">
 				<spring:message code="patientsummary.download"/>
 			</button>
+			<button onclick="window.open('<openmrs:contextPath />/module/patientsummary/renderSummary.form?print=true&patientId=${model.patientId}&summaryId=${ps.id}');">
+				<spring:message code="patientsummary.print"/>
+			</button>
 		</span>
 	</c:forEach>
 </div>
