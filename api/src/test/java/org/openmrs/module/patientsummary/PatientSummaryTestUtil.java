@@ -13,25 +13,19 @@
  */
 package org.openmrs.module.patientsummary;
 
+import java.io.InputStream;
+import java.util.HashMap;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Ignore;
-import org.junit.Test;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientsummary.api.PatientSummaryService;
-import org.openmrs.module.reporting.data.person.definition.*;
-import org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition;
-import org.openmrs.module.reporting.report.ReportData;
 import org.openmrs.module.reporting.report.ReportDesign;
 import org.openmrs.module.reporting.report.ReportDesignResource;
-import org.openmrs.module.reporting.report.definition.service.ReportDefinitionService;
 import org.openmrs.module.reporting.report.renderer.TextTemplateRenderer;
 import org.openmrs.module.reporting.report.service.ReportService;
-import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.util.OpenmrsClassLoader;
-
-import java.io.InputStream;
-import java.util.HashMap;
 
 /**
  * Tests {@link {PatientSummaryService}}.

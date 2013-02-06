@@ -115,4 +115,24 @@ public class PatientSummaryBehaviorTest extends BaseModuleContextSensitiveTest {
 
 		PatientSummaryTestUtil.testGroovyTemplate(rd, 7, "Alert");
 	}
+	
+	@Test
+	public void shouldSupportLastThreeObsData() throws Exception {
+		PatientSummaryService pss = Context.getService(PatientSummaryService.class);
+
+		PatientSummaryReportDefinition rd = new PatientSummaryReportDefinition();
+		rd.setName("Test Patient Summary");
+		PatientDataSetDefinition dsd = rd.getPatientDataSetDefinition();
+
+		Concept weight = Context.getConceptService().getConcept("WEIGHT (KG)");
+
+		ObsForPersonDataDefinition weights = new ObsForPersonDataDefinition();
+		weights.setWhich(TimeQualifier.ANY);
+		weights.setQuestion(weight);
+		dsd.addColumn("weights", weights, "");
+
+		rd = pss.savePatientSummaryReportDefinition(rd);
+
+		PatientSummaryTestUtil.testGroovyTemplate(rd, 7, "LastThreeObs");
+	}
 }
