@@ -13,23 +13,21 @@
  */
 package org.openmrs.module.patientsummary;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.Concept;
-import org.openmrs.EncounterType;
-import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.patientsummary.PatientSummaryReportDefinition;
-import org.openmrs.module.patientsummary.PatientSummaryTemplate;
 import org.openmrs.module.patientsummary.api.PatientSummaryService;
 import org.openmrs.module.reporting.common.TimeQualifier;
 import org.openmrs.module.reporting.data.patient.definition.EncountersForPatientDataDefinition;
-import org.openmrs.module.reporting.data.person.definition.*;
+import org.openmrs.module.reporting.data.person.definition.AgeDataDefinition;
+import org.openmrs.module.reporting.data.person.definition.BirthdateDataDefinition;
+import org.openmrs.module.reporting.data.person.definition.GenderDataDefinition;
+import org.openmrs.module.reporting.data.person.definition.ObsForPersonDataDefinition;
+import org.openmrs.module.reporting.data.person.definition.PreferredAddressDataDefinition;
+import org.openmrs.module.reporting.data.person.definition.PreferredNameDataDefinition;
 import org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition;
-import org.openmrs.module.reporting.report.renderer.TextTemplateRenderer;
+import org.openmrs.module.reporting.report.ReportData;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
-
-import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests {@link {PatientSummaryService}}.
@@ -97,5 +95,25 @@ public class PatientSummaryBehaviorTest extends BaseModuleContextSensitiveTest {
 		rd = pss.savePatientSummaryReportDefinition(rd);
 
 		PatientSummaryTestUtil.testGroovyTemplate(rd, 7, "Obs");
+	}
+	
+	@Test
+	public void shouldSupportConditionalAlertsOrReminders() throws Exception {
+		PatientSummaryService pss = Context.getService(PatientSummaryService.class);
+
+		PatientSummaryReportDefinition rd = new PatientSummaryReportDefinition();
+		rd.setName("Test Patient Summary");
+		PatientDataSetDefinition dsd = rd.getPatientDataSetDefinition();
+
+		Concept cd4Count = Context.getConceptService().getConcept("CD4 COUNT");
+
+		ObsForPersonDataDefinition lastCd4Count = new ObsForPersonDataDefinition();
+		lastCd4Count.setWhich(TimeQualifier.LAST);
+		lastCd4Count.setQuestion(cd4Count);
+		dsd.addColumn("lastCD4Count", lastCd4Count, "");
+		
+		rd = pss.savePatientSummaryReportDefinition(rd);
+
+		PatientSummaryTestUtil.testGroovyTemplate(rd, 7, "Alert");
 	}
 }

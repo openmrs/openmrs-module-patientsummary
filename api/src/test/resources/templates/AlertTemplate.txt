@@ -1,0 +1,13 @@
+<%
+dataset = reportData.dataSets.get("patient");
+obsDateTime = dataset.iterator().next().getColumnValue("lastCD4Count").getObsDatetime();
+today = new Date();
+
+monthBetween = (today[Calendar.MONTH] - obsDateTime[Calendar.MONTH]) + 1
+yearsBetween = today[Calendar.YEAR] - obsDateTime[Calendar.YEAR]
+months = monthBetween + (yearsBetween * 12)
+
+if(months > 12) {
+	print "Please order CD4 count now (last CD4 performed over 12 months ago).";
+}
+%>
