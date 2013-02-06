@@ -22,10 +22,8 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.htmlwidgets.web.handler.WidgetHandler;
-import org.openmrs.module.patientsummary.PatientSummaryConstants;
 import org.openmrs.module.patientsummary.PatientSummaryReportDefinition;
 import org.openmrs.module.patientsummary.PatientSummaryTemplate;
 import org.openmrs.module.patientsummary.api.PatientSummaryService;
@@ -80,8 +78,7 @@ public class PatientSummaryTemplateEditor {
 	    model.put("scriptType", template.getReportDesign().getPropertyValue(TextTemplateRenderer.TEMPLATE_TYPE, ""));
 		model.put("scriptTypes", TemplateEngineManager.getAvailableTemplateEngineNames());
 		
-		String uuids = Context.getAdministrationService().getGlobalProperty(PatientSummaryConstants.GP_PATIENT_DASHBOARD_SUMMARIES, "");
-		model.put("enableOnPatientDashboard", uuids.contains(template.getUuid()));
+		model.put("enableOnPatientDashboard", PatientSummaryWebConfiguration.enableOnPatientDashboard(template));
 		
 		if (template.getReportDesign().getRendererType().equals(TextTemplateRenderer.class)) {
 			ReportDesignResource resource = template.getReportDesign().getResourceByName("template");
@@ -95,10 +92,10 @@ public class PatientSummaryTemplateEditor {
 	public void saveTemplate(String templateUuid, String name, Class<? extends ReportRenderer> rendererType,
 	                         String properties, String script, String scriptType, boolean enableOnPatientDashboard, HttpServletRequest request, ModelMap model)
 	    throws IOException {
-		
-		saveEnableTemplateOnPatientDashboard(templateUuid, enableOnPatientDashboard);
-		
+
 		PatientSummaryTemplate template = getService().getPatientSummaryTemplateByUuid(templateUuid);
+		
+		PatientSummaryWebConfiguration.saveEnableTemplateOnPatientDashboard(template, enableOnPatientDashboard);
 		
 		template.getReportDesign().setName(name);
 		template.getReportDesign().setRendererType(rendererType);
@@ -169,37 +166,5 @@ public class PatientSummaryTemplateEditor {
 	
 	private PatientSummaryService getService() {
 		return Context.getService(PatientSummaryService.class);
-	}
-	
-	private void saveEnableTemplateOnPatientDashboard(String templateUuid, boolean enableOnPatientDashboard) {
-		String uuids = Context.getAdministrationService().getGlobalProperty(PatientSummaryConstants.GP_PATIENT_DASHBOARD_SUMMARIES, "");
-		if (enableOnPatientDashboard) {
-			//Add this template uuid if not already part of the global property value.
-			if (!uuids.contains(templateUuid)) {
-				if (!StringUtils.isBlank(uuids)) {
-					uuids += ",";
-				}
-				uuids += templateUuid;
-				
-				Context.getAdministrationService().setGlobalProperty(PatientSummaryConstants.GP_PATIENT_DASHBOARD_SUMMARIES, uuids);
-			}
-		}
-		else {
-			//Remove this template uuid if already part of the global property value.
-			if (uuids.contains(templateUuid)) {
-				uuids = StringUtils.deleteWhitespace(uuids);
-				
-				//remove if at start or middle of list
-				uuids = uuids.replace(templateUuid + ",", "");
-				
-				//remove if at end of list
-				uuids = uuids.replace("," + templateUuid, "");
-				
-				//remove if the only set uuid
-				uuids = uuids.replace(templateUuid, "");
-				
-				Context.getAdministrationService().setGlobalProperty(PatientSummaryConstants.GP_PATIENT_DASHBOARD_SUMMARIES, uuids);
-			}
-		}
 	}
 }
