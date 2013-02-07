@@ -1,8 +1,5 @@
 <% 	
-	dataset = reportData.dataSets.get("patient");
-	row = dataset.iterator().next();
-    column = dataset.metaData.columns.iterator().next();
-	obsList = row.getColumnValue(column);
+	obsList = data.weights;
 	obsList = util.sort(obsList, "obsDatetime desc");			
 	for (obs in obsList) {
 		println obs.valueNumeric  + '  (' + util.format(obs.obsDatetime, 'dd/MMM/yyyy') + ')';
