@@ -175,7 +175,7 @@
 			</div>
 		</div>
 		<div id="preview">
-			<iframe id="previewFrame" style="width: 99%; height: 400px"></iframe>
+			<iframe id="previewFrame" name="previewFrame" style="width: 99%; height: 400px"></iframe>
 		</div>
 	</div>
 	<br/><br/>
