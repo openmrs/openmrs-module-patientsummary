@@ -31,15 +31,15 @@
 	</modules>
 	
 	<properties>
-		<openMRSVersion>1.7.4</openMRSVersion>
-		<reportingVersion>0.7.5</reportingVersion>
+		<openMRSVersion>1.9.7</openMRSVersion>
+		<reportingVersion>0.9.7</reportingVersion>
 		<serializationXstreamVersion>0.2.7</serializationXstreamVersion>
 		<htmlwidgetsVersion>1.6.1</htmlwidgetsVersion>
 		<calculationVersion>1.0</calculationVersion>
 		<groovyVersion>1.8.7</groovyVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<MODULE_ID>${project.parent.artifactId}</MODULE_ID>
-		<MODULE_NAME>${project.parent.name}</MODULE_NAME>
+		<MODULE_NAME>Patient Summary Module</MODULE_NAME>
 		<MODULE_VERSION>${project.parent.version}</MODULE_VERSION>
 		<MODULE_PACKAGE>${project.parent.groupId}.${project.parent.artifactId}</MODULE_PACKAGE>
 	</properties>
