@@ -13,29 +13,35 @@
  */
 package org.openmrs.module.patientsummary;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.module.reporting.report.ReportData;
 import org.openmrs.module.reporting.report.ReportDesign;
-import org.openmrs.module.reporting.report.renderer.ReportRenderer;
+import org.openmrs.module.reporting.report.renderer.RenderingException;
+import org.openmrs.module.reporting.report.renderer.ReportTemplateRenderer;
 
 /**
  * Represents a particular Patient Summary Template
  */
-public class PatientSummaryTemplate {
+public class PatientSummaryTemplate extends ReportTemplateRenderer {
 	
 	protected final Log log = LogFactory.getLog(this.getClass());
 	
-	//***** PROPERTIES *****
+	// ***** PROPERTIES *****
 	
 	private ReportDesign reportDesign;
 	
-	//***** CONSTRUCTORS *****
+	// ***** CONSTRUCTORS *****
 	
 	/**
 	 * Default constructor
 	 */
-	public PatientSummaryTemplate() {}
+	public PatientSummaryTemplate() {
+	}
 	
 	/**
 	 * Full Constructor
@@ -44,15 +50,14 @@ public class PatientSummaryTemplate {
 		this.reportDesign = reportDesign;
 	}
 	
-	//***** METHODS *****
+	// ***** METHODS *****
 	
 	/**
 	 * @return the contentType for this PatientSummary
 	 */
 	public String getContentType() {
 		try {
-			ReportRenderer rr = reportDesign.getRendererType().newInstance();
-			String contentType = rr.getRenderedContentType(reportDesign.getReportDefinition(), reportDesign.getUuid());
+			String contentType = getTemplate(reportDesign).getContentType();
 			if (StringUtils.isNotEmpty(contentType)) {
 				return contentType;
 			}
@@ -68,8 +73,7 @@ public class PatientSummaryTemplate {
 	 */
 	public String getExportFilename() {
 		try {
-			ReportRenderer rr = reportDesign.getRendererType().newInstance();
-			return rr.getFilename(reportDesign.getReportDefinition(), reportDesign.getUuid());
+			return getExportFilename();
 		}
 		catch (Exception e) {
 			log.warn("Unable to retrieve file name for patient summary: " + reportDesign);
@@ -102,23 +106,23 @@ public class PatientSummaryTemplate {
 	 * @return the associated patient summary report definition
 	 */
 	public PatientSummaryReportDefinition getReportDefinition() {
-		return getReportDesign() != null ? (PatientSummaryReportDefinition)getReportDesign().getReportDefinition() : null;
+		return getReportDesign() != null ? (PatientSummaryReportDefinition) getReportDesign().getReportDefinition() : null;
 	}
-
+	
 	/**
 	 * @see Object#equals(Object)
 	 */
 	@Override
 	public boolean equals(Object o) {
 		if (o != null && o instanceof PatientSummaryTemplate) {
-			PatientSummaryTemplate that = (PatientSummaryTemplate)o;
+			PatientSummaryTemplate that = (PatientSummaryTemplate) o;
 			if (this.getReportDesign() != null && that.getReportDesign() != null) {
 				return this.getReportDesign().equals(that.getReportDesign());
 			}
 		}
 		return super.equals(o);
 	}
-
+	
 	/**
 	 * @see Object#hashCode()
 	 */
@@ -129,7 +133,7 @@ public class PatientSummaryTemplate {
 		}
 		return super.hashCode();
 	}
-
+	
 	/**
 	 * @see Object#toString()
 	 */
@@ -144,19 +148,23 @@ public class PatientSummaryTemplate {
 		return super.toString();
 	}
 	
-	//***** PROPERTY ACCESS *****
-
+	// ***** PROPERTY ACCESS *****
+	
 	/**
 	 * @return the reportDesign
 	 */
 	public ReportDesign getReportDesign() {
 		return reportDesign;
 	}
-
+	
 	/**
 	 * @param reportDesign the reportDesign to set
 	 */
 	public void setReportDesign(ReportDesign reportDesign) {
 		this.reportDesign = reportDesign;
+	}
+	
+	@Override
+	public void render(ReportData arg0, String arg1, OutputStream arg2) throws IOException, RenderingException {
 	}
 }
