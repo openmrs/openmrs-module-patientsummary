@@ -1,4 +1,6 @@
 openmrs-module-patientsummary
 =============================
 
-Patient summary using reporting framework for openmrs
+Provides the ability for users to define their own, customized patient summaries.
+
+For full documentation, please visit: https://wiki.openmrs.org/display/docs/Patient+Summary+Module
