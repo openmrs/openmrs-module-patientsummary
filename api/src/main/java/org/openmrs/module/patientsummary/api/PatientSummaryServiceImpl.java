@@ -44,9 +44,9 @@ import org.springframework.transaction.annotation.Transactional;
  * The core implementation of {@link PatientSummaryService}.
  */
 public class PatientSummaryServiceImpl extends BaseOpenmrsService implements PatientSummaryService {
-	
+
 	protected final Log log = LogFactory.getLog(this.getClass());
-	
+
 	/**
 	 * @see PatientSummaryService#getPatientSummaryReportDefinition(Integer)
 	 */
@@ -54,7 +54,7 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
 	public PatientSummaryReportDefinition getPatientSummaryReportDefinition(Integer id) {
 		return (PatientSummaryReportDefinition)getReportDefinitionService().getDefinition(id);
 	}
-	
+
 	/**
 	 * @see PatientSummaryService#getPatientSummaryReportDefinitionByUuid(String)
 	 */
@@ -62,7 +62,7 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
 	public PatientSummaryReportDefinition getPatientSummaryReportDefinitionByUuid(String uuid) {
 		return (PatientSummaryReportDefinition)getReportDefinitionService().getDefinitionByUuid(uuid);
 	}
-	
+
 	/**
 	 * @see PatientSummaryService#getAllPatientSummaryReportDefinitions(boolean)
 	 */
@@ -76,8 +76,8 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
 		}
 		return l;
 	}
-	
-	
+
+
 	/**
      * @see PatientSummaryService#purgePatientSummaryReportDefinition(PatientSummaryReportDefinition)
      */
@@ -85,7 +85,7 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
     public void purgePatientSummaryReportDefinition(PatientSummaryReportDefinition reportDefinition) {
     	getReportDefinitionService().purgeDefinition(reportDefinition);
     }
-    
+
 	/**
 	 * @see PatientSummaryService#getPatientSummaryTemplates(PatientSummaryReportDefinition, boolean)
 	 */
@@ -135,7 +135,7 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
 		}
 		return l;
 	}
-	
+
 	/**
 	 * @see PatientSummaryService#evaluatePatientSummaryTemplate(PatientSummaryTemplate, Integer, Map)
 	 */
@@ -154,17 +154,18 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
 					context.addParameterValue(paramEntry.getKey(), paramEntry.getValue());
 				}
 			}
-			
-			// Evaluate the PatientSummary with this context to produce the data to use to populate the summary
+
+			// Evaluate the PatientSummary with this Context to produce data, then
+			// use that data to populate the summary
 			ReportDefinitionService rds = Context.getService(ReportDefinitionService.class);
 			ReportData data = rds.evaluate(patientSummaryTemplate.getReportDesign().getReportDefinition(), context);
-			
+
 			// Render the template with this data to produce the raw data result
 			Class<? extends ReportRenderer> rendererType = patientSummaryTemplate.getReportDesign().getRendererType();
 			ReportRenderer renderer = rendererType.newInstance();
 			String rendererArg = patientSummaryTemplate.getReportDesign().getUuid();
 			renderer.render(data, rendererArg, baos);
-			
+
 			// Return a PatientSummaryResult which contains the raw output and contextual data
 			result.setContentType(patientSummaryTemplate.getContentType());
 			result.setRawContents(baos.toByteArray());
@@ -178,7 +179,7 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
 		}
 		return result;
 	}
-	
+
 	/**
      * @see PatientSummaryService#purgePatientSummaryTemplate(PatientSummaryTemplate)
      */
@@ -193,7 +194,7 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
 	protected ReportDefinitionService getReportDefinitionService() {
 		return Context.getService(ReportDefinitionService.class);
 	}
-	
+
 	/**
 	 * @return the underlying ReportService used to manage the patient summaries
 	 */
@@ -209,14 +210,14 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
     public PatientSummaryReportDefinition savePatientSummaryReportDefinition(PatientSummaryReportDefinition rd) {
     	PatientDataSetDefinition dataSetDefinition = rd.getPatientDataSetDefinition();
     	dataSetDefinition.setName("Patient Dataset for " + rd.getName());
-    	
+
 		if (StringUtils.isBlank(dataSetDefinition.getUuid())) {
 			dataSetDefinition.setUuid(UUID.randomUUID().toString());
 		}
-		
+
 		//DataSet needs to be saved first.
 		Context.getService(DataSetDefinitionService.class).saveDefinition(dataSetDefinition);
-    	
+
     	return getReportDefinitionService().saveDefinition(rd);
     }
 

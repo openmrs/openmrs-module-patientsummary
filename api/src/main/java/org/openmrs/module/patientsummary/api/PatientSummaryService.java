@@ -26,60 +26,60 @@ import org.springframework.transaction.annotation.Transactional;
  * API interface for Patient Summary services
  */
 public interface PatientSummaryService extends OpenmrsService {
-	
+
 	/**
 	 * @return the {@link PatientSummaryReportDefinition} referenced by the passed id
 	 */
 	@Transactional(readOnly = true)
 	public PatientSummaryReportDefinition getPatientSummaryReportDefinition(Integer id);
-	
+
 	/**
 	 * @return the {@link PatientSummaryReportDefinition} referenced by the passed uuid
 	 */
 	@Transactional(readOnly = true)
 	public PatientSummaryReportDefinition getPatientSummaryReportDefinitionByUuid(String uuid);
-	
+
 	/**
-	 * @return all {@link PatientSummaryReportDefinition}s
+	 * @return all {@link PatientSummaryReportDefinition}
 	 */
 	@Transactional(readOnly = true)
 	public List<PatientSummaryReportDefinition> getAllPatientSummaryReportDefinitions(boolean includeRetired);
-	
+
 	/**
      * Purges the passed PatientSummaryReportDefinition from the database
      */
 	@Transactional
     public void purgePatientSummaryReportDefinition(PatientSummaryReportDefinition reportDefinition);
-	
-	/** 
+
+	/**
 	 * Return all the {@link PatientSummaryTemplate}s for a given PatientSummaryReportDefinition
 	 */
 	public List<PatientSummaryTemplate> getPatientSummaryTemplates(PatientSummaryReportDefinition reportDefinition, boolean includeRetired);
-	
+
 	/**
-	 * @return the {@link PatientSummaryTemplate} referenced by the passed id
+	 * @return the {@link PatientSummaryTemplate} referenced by supplied id
 	 */
 	@Transactional(readOnly = true)
 	public PatientSummaryTemplate getPatientSummaryTemplate(Integer id);
-	
+
 	/**
 	 * @return the {@link PatientSummaryTemplate} with the given uuid
 	 */
 	@Transactional(readOnly = true)
 	public PatientSummaryTemplate getPatientSummaryTemplateByUuid(String uuid);
-	
+
 	/**
-	 * @return all {@link PatientSummaryTemplate}s
+	 * @return all {@link PatientSummaryTemplate}
 	 */
 	@Transactional(readOnly = true)
 	public List<PatientSummaryTemplate> getAllPatientSummaryTemplates(boolean includeRetired);
-	
+
 	/**
 	 * @return the resulting patient summary result from evaluating the passed patient summary template for the given patient and parameters
 	 */
 	@Transactional(readOnly = true)
 	public PatientSummaryResult evaluatePatientSummaryTemplate(PatientSummaryTemplate patientSummaryTemplate, Integer patientId, Map<String, Object> parameters);
-	
+
 	/**
      * Purges the passed {@link PatientSummaryTemplate} from the database
      */
@@ -88,15 +88,15 @@ public interface PatientSummaryService extends OpenmrsService {
 
 	/**
      * Saves the passed {@link PatientSummaryReportDefinition}.
-     * 
-     * @param rd
+     *
+     * @param rd: the PatientSummaryReportDefinition to save
      */
     public PatientSummaryReportDefinition savePatientSummaryReportDefinition(PatientSummaryReportDefinition rd);
 
 	/**
      * Saves the passed {@link PatientSummaryTemplate}.
-     * 
-     * @param template
+     *
+     * @param template: the patientSummaryTemplate to save
      */
     public PatientSummaryTemplate savePatientSummaryTemplate(PatientSummaryTemplate template);
 }

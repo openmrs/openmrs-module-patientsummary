@@ -22,39 +22,39 @@ import org.openmrs.module.reporting.report.definition.ReportDefinition;
 /**
  * A {@link ReportDefinition} subclass that represents the metadata that describes a particular
  * patient summary report that can be evaluated.
- * 
+ *
  * @see ReportDefinition
  */
 @Localized("patientsummary.PatientSummaryReportDefinition")
 public class PatientSummaryReportDefinition extends ReportDefinition {
-	
+
 	public static final String DEFAULT_DATASET_KEY = "patient";
-	
+
 	/**
 	 * Default Constructor
 	 */
 	public PatientSummaryReportDefinition() {
 		setPatientDataSetDefinition(new PatientDataSetDefinition());
 	}
-	
+
 	/**
-	 * Overrides the default behavior, such that only a single PatientDataSetDefinition is supported
+	 * Overrides the default behavior, so that only a single PatientDataSetDefinition is supported
 	 */
 	@Override
 	public void addDataSetDefinition(String key, Mapped<? extends DataSetDefinition> definition) {
 		throw new PatientSummaryException("The PatientSummaryReportDefinition does not support multiple DataSetDefinitions");
 	}
-	
+
 	/**
 	 * @return the underlying PatientDataSetDefinition
 	 */
 	public PatientDataSetDefinition getPatientDataSetDefinition() {
 		return (PatientDataSetDefinition) getDataSetDefinitions().get(DEFAULT_DATASET_KEY).getParameterizable();
-		
+
 	}
-	
+
 	/**
-	 * @return the underlying PatientDataSetDefinition
+	 * @param pdsd: the PatientDataSetDefinition to set
 	 */
 	public void setPatientDataSetDefinition(PatientDataSetDefinition pdsd) {
 		getDataSetDefinitions().put(DEFAULT_DATASET_KEY, new Mapped<DataSetDefinition>(pdsd, null));

@@ -19,18 +19,18 @@ import java.util.Map;
  * Represents a particular Patient Summary
  */
 public class PatientSummaryResult {
-	
+
 	//***** PROPERTIES *****
-	
+
 	private PatientSummaryTemplate summaryTemplate;
 	private Integer patientId;
 	private Map<String, Object> parameters;
 	private String contentType;
 	private byte[] rawContents;
 	private Throwable errorDetails;
-	
+
 	//***** CONSTRUCTORS *****
-	
+
 	/**
 	 * Default constructor
 	 */
@@ -39,7 +39,7 @@ public class PatientSummaryResult {
 		this.patientId = patientId;
 		this.parameters = parameters;
 	}
-	
+
 	//***** PROPERTY ACCESS *****
 
 	/**
@@ -64,7 +64,7 @@ public class PatientSummaryResult {
 	}
 
 	/**
-	 * @param patientId the patientId to set
+	 * @param patientId: the patientId to set
 	 */
 	public void setPatientId(Integer patientId) {
 		this.patientId = patientId;
@@ -125,5 +125,5 @@ public class PatientSummaryResult {
 	public void setErrorDetails(Throwable errorDetails) {
 		this.errorDetails = errorDetails;
 	}
-	
+
 }
