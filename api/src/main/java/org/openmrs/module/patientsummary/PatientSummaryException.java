@@ -16,19 +16,19 @@ package org.openmrs.module.patientsummary;
 import org.openmrs.api.APIException;
 
 /**
- * Indicates an exception from the patient summary module
+ * Indicates an exception in this module
  */
 public class PatientSummaryException extends APIException {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Constructor that takes in a message
 	 */
 	public PatientSummaryException(String message) {
 		super(message);
 	}
-	
+
 	/**
 	 * Constructor that takes in a message and a cause
 	 */

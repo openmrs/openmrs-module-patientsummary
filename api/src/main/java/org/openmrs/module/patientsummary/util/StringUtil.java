@@ -18,7 +18,7 @@ package org.openmrs.module.patientsummary.util;
  * String utils.
  */
 public class StringUtil {
-	
+
 	/**
 	 * Copied from http://stackoverflow.com/a/2560017
 	 * <p>
