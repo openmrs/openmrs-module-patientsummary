@@ -57,7 +57,7 @@ public interface PatientSummaryService extends OpenmrsService {
 	public List<PatientSummaryTemplate> getPatientSummaryTemplates(PatientSummaryReportDefinition reportDefinition, boolean includeRetired);
 	
 	/**
-	 * @return the {@link PatientSummaryTemplate} referenced by the passed id
+	 * @return the {@link PatientSummaryTemplate} referenced by the supplied id
 	 */
 	@Transactional(readOnly = true)
 	public PatientSummaryTemplate getPatientSummaryTemplate(Integer id);
@@ -89,14 +89,14 @@ public interface PatientSummaryService extends OpenmrsService {
 	/**
      * Saves the passed {@link PatientSummaryReportDefinition}.
      * 
-     * @param rd
+     * @param rd: the PatientSummaryReportDefinition to save
      */
     public PatientSummaryReportDefinition savePatientSummaryReportDefinition(PatientSummaryReportDefinition rd);
 
 	/**
      * Saves the passed {@link PatientSummaryTemplate}.
      * 
-     * @param template
+     * @param template: the patientSummaryTemplate to save
      */
     public PatientSummaryTemplate savePatientSummaryTemplate(PatientSummaryTemplate template);
 }

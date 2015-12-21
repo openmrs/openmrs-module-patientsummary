@@ -38,7 +38,7 @@ public class PatientSummaryReportDefinition extends ReportDefinition {
 	}
 	
 	/**
-	 * Overrides the default behavior, such that only a single PatientDataSetDefinition is supported
+	 * Overrides the default behavior, so that only a single PatientDataSetDefinition is supported
 	 */
 	@Override
 	public void addDataSetDefinition(String key, Mapped<? extends DataSetDefinition> definition) {
@@ -54,7 +54,7 @@ public class PatientSummaryReportDefinition extends ReportDefinition {
 	}
 	
 	/**
-	 * @return the underlying PatientDataSetDefinition
+	 * @param pdsd: the PatientDataSetDefinition to set
 	 */
 	public void setPatientDataSetDefinition(PatientDataSetDefinition pdsd) {
 		getDataSetDefinitions().put(DEFAULT_DATASET_KEY, new Mapped<DataSetDefinition>(pdsd, null));

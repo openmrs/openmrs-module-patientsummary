@@ -155,7 +155,8 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
 				}
 			}
 			
-			// Evaluate the PatientSummary with this context to produce the data to use to populate the summary
+			// Evaluate the PatientSummary with this Context to produce data, then
+			// use that data to populate the summary
 			ReportDefinitionService rds = Context.getService(ReportDefinitionService.class);
 			ReportData data = rds.evaluate(patientSummaryTemplate.getReportDesign().getReportDefinition(), context);
 			

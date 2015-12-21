@@ -16,7 +16,7 @@ package org.openmrs.module.patientsummary;
 import org.openmrs.api.APIException;
 
 /**
- * Indicates an exception from the patient summary module
+ * Indicates an exception in this module
  */
 public class PatientSummaryException extends APIException {
 	
