@@ -32,6 +32,8 @@ import org.openmrs.module.patientsummary.PatientSummaryTemplate;
 import org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition;
 import org.openmrs.module.reporting.dataset.definition.service.DataSetDefinitionService;
 import org.openmrs.module.reporting.evaluation.EvaluationContext;
+import org.openmrs.module.reporting.evaluation.context.EncounterEvaluationContext;
+import org.openmrs.module.reporting.query.encounter.EncounterIdSet;
 import org.openmrs.module.reporting.report.ReportData;
 import org.openmrs.module.reporting.report.ReportDesign;
 import org.openmrs.module.reporting.report.definition.ReportDefinition;
@@ -144,13 +146,17 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
 		PatientSummaryResult result = new PatientSummaryResult(patientSummaryTemplate, patientId, parameters);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
-			// Populate a new EvaluationContext with the patient and parameters passed in
-			EvaluationContext context = new EvaluationContext();
+			// Populate a new EncounterEvaluationContext with the patient and parameters passed in
+			EncounterEvaluationContext context = new EncounterEvaluationContext();
 			Cohort baseCohort = new Cohort();
 			baseCohort.addMember(patientId);
 			context.setBaseCohort(baseCohort);
 			if (parameters != null) {
 				for (Map.Entry<String, Object> paramEntry : parameters.entrySet()) {
+					// If there's a parameter named "encounterIds" use it to filter for only those encounters
+					if ("encounterIds".equals(paramEntry.getKey())) {
+						context.setBaseEncounters((EncounterIdSet)paramEntry.getValue());
+					}
 					context.addParameterValue(paramEntry.getKey(), paramEntry.getValue());
 				}
 			}
