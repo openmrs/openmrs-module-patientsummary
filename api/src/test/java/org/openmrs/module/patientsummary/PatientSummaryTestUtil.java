@@ -22,6 +22,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientsummary.api.PatientSummaryService;
+import org.openmrs.module.reporting.evaluation.EvaluationContext;
 import org.openmrs.module.reporting.report.ReportDesign;
 import org.openmrs.module.reporting.report.ReportDesignResource;
 import org.openmrs.module.reporting.report.renderer.TextTemplateRenderer;
@@ -51,6 +52,24 @@ public class PatientSummaryTestUtil {
 		Assert.assertEquals(StringUtils.deleteWhitespace(expectedResults), StringUtils.deleteWhitespace(actualResult));
 	}
 
+	/**
+	 * Utility method that tests that the results of evaluating a particular template,
+	 * for a particular report definition, produces a particular result
+	 */
+	public static void testGroovyTemplateWithContext(PatientSummaryReportDefinition rd, Integer patientId, String templatePrefix, EvaluationContext context) throws Exception {
+
+		PatientSummaryTemplate template = createGroovyTemplate("Test", rd, "templates/" + templatePrefix + "Template.txt");
+		String expectedResults = PatientSummaryTestUtil.getResourceAsString("templates/" + templatePrefix + "Output.txt");
+
+		PatientSummaryService pss = Context.getService(PatientSummaryService.class);
+		PatientSummaryResult result = pss.evaluatePatientSummaryTemplate(template, patientId, context);
+
+		Assert.assertNull(result.getErrorDetails());
+		String actualResult = new String(result.getRawContents(), "UTF-8");
+		Assert.assertEquals(StringUtils.deleteWhitespace(expectedResults), StringUtils.deleteWhitespace(actualResult));
+	}
+
+	
 	/**
 	 * Utility method to retrieve a text-based resource as a String
 	 */

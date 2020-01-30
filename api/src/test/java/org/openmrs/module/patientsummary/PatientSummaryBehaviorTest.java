@@ -36,6 +36,7 @@ import org.openmrs.module.reporting.data.person.definition.ObsForPersonDataDefin
 import org.openmrs.module.reporting.data.person.definition.PreferredAddressDataDefinition;
 import org.openmrs.module.reporting.data.person.definition.PreferredNameDataDefinition;
 import org.openmrs.module.reporting.dataset.definition.PatientDataSetDefinition;
+import org.openmrs.module.reporting.evaluation.context.EncounterEvaluationContext;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 /**
@@ -80,6 +81,7 @@ public class PatientSummaryBehaviorTest extends BaseModuleContextSensitiveTest {
 		rd = pss.savePatientSummaryReportDefinition(rd);
 		
 		PatientSummaryTestUtil.testGroovyTemplate(rd, 7, "Encounters");
+		PatientSummaryTestUtil.testGroovyTemplateWithContext(rd, 7, "Encounters", new EncounterEvaluationContext());
 	}
 	
 	//@Test
@@ -106,6 +108,7 @@ public class PatientSummaryBehaviorTest extends BaseModuleContextSensitiveTest {
 		rd = pss.savePatientSummaryReportDefinition(rd);
 		
 		PatientSummaryTestUtil.testGroovyTemplate(rd, 7, "Obs");//TODO Fails: http://pastebin.com/uSBYd9hs
+		PatientSummaryTestUtil.testGroovyTemplateWithContext(rd, 7, "Obs", new EncounterEvaluationContext());//TODO Fails: http://pastebin.com/uSBYd9hs
 	}
 	
 	//@Test
@@ -126,7 +129,8 @@ public class PatientSummaryBehaviorTest extends BaseModuleContextSensitiveTest {
 		
 		rd = pss.savePatientSummaryReportDefinition(rd);
 		
-		PatientSummaryTestUtil.testGroovyTemplate(rd, 7, "Alert");//TODO Error: http://pastebin.com/khAQLY9u
+		PatientSummaryTestUtil.testGroovyTemplate(rd, 7, "Alert");//TODO Error: http://pastebin.com/khAQLY9
+		PatientSummaryTestUtil.testGroovyTemplateWithContext(rd, 7, "Alert", new EncounterEvaluationContext());//TODO Error: http://pastebin.com/khAQLY9u
 	}
 	
 	private PatientSummaryService getService() {
@@ -157,6 +161,7 @@ public class PatientSummaryBehaviorTest extends BaseModuleContextSensitiveTest {
 		saveObs(7, "2012-02-01", 7, 18);
 		
 		PatientSummaryTestUtil.testGroovyTemplate(rd, 7, "ObsBasedProblemList");
+		PatientSummaryTestUtil.testGroovyTemplateWithContext(rd, 7, "ObsBasedProblemList", new EncounterEvaluationContext());
 	}
 	
 	private void saveObs(Integer personId, String dateStr, Integer question, Integer answer) {
@@ -189,5 +194,6 @@ public class PatientSummaryBehaviorTest extends BaseModuleContextSensitiveTest {
 		rd = pss.savePatientSummaryReportDefinition(rd);
 		
 		PatientSummaryTestUtil.testGroovyTemplate(rd, 7, "LastThreeObs");//TODO Fix: http://pastebin.com/MkD9Cxht
+		PatientSummaryTestUtil.testGroovyTemplateWithContext(rd, 7, "LastThreeObs", new EncounterEvaluationContext());//TODO Fix: http://pastebin.com/MkD9Cxht
 	}
 }

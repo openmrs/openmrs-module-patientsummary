@@ -136,24 +136,18 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
 		return l;
 	}
 	
-	/**
-	 * @see PatientSummaryService#evaluatePatientSummaryTemplate(PatientSummaryTemplate, Integer, Map)
-	 */
 	@Override
-	public PatientSummaryResult evaluatePatientSummaryTemplate(PatientSummaryTemplate patientSummaryTemplate, Integer patientId, Map<String, Object> parameters) {
-		PatientSummaryResult result = new PatientSummaryResult(patientSummaryTemplate, patientId, parameters);
+	public PatientSummaryResult evaluatePatientSummaryTemplate(PatientSummaryTemplate patientSummaryTemplate,
+	        Integer patientId, EvaluationContext context) {
+		PatientSummaryResult result = new PatientSummaryResult(patientSummaryTemplate, patientId,
+		        context.getParameterValues());
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
 			// Populate a new EvaluationContext with the patient and parameters passed in
-			EvaluationContext context = new EvaluationContext();
 			Cohort baseCohort = new Cohort();
 			baseCohort.addMember(patientId);
 			context.setBaseCohort(baseCohort);
-			if (parameters != null) {
-				for (Map.Entry<String, Object> paramEntry : parameters.entrySet()) {
-					context.addParameterValue(paramEntry.getKey(), paramEntry.getValue());
-				}
-			}
+			//parameters can be set on EvaluationContext instance before passing it into this method
 			
 			// Evaluate the PatientSummary with this Context to produce data, then
 			// use that data to populate the summary
@@ -177,6 +171,26 @@ public class PatientSummaryServiceImpl extends BaseOpenmrsService implements Pat
 		finally {
 			IOUtils.closeQuietly(baos);
 		}
+		return result;
+		
+	}
+	
+	/**
+	 * @see PatientSummaryService#evaluatePatientSummaryTemplate(PatientSummaryTemplate, Integer,
+	 *      Map)
+	 */
+	@Override
+	public PatientSummaryResult evaluatePatientSummaryTemplate(PatientSummaryTemplate patientSummaryTemplate,
+	        Integer patientId, Map<String, Object> parameters) {
+		EvaluationContext context = new EvaluationContext();
+		if (parameters != null) {
+			for (Map.Entry<String, Object> paramEntry : parameters.entrySet()) {
+				context.addParameterValue(paramEntry.getKey(), paramEntry.getValue());
+			}
+		}
+		
+		PatientSummaryResult result = evaluatePatientSummaryTemplate(patientSummaryTemplate, patientId, context);
+		
 		return result;
 	}
 	
