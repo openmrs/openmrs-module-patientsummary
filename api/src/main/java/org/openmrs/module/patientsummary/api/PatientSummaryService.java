@@ -17,9 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.patientsummary.PatientSummaryTemplate;
 import org.openmrs.module.patientsummary.PatientSummaryReportDefinition;
 import org.openmrs.module.patientsummary.PatientSummaryResult;
+import org.openmrs.module.patientsummary.PatientSummaryTemplate;
+import org.openmrs.module.reporting.evaluation.EvaluationContext;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -75,7 +76,16 @@ public interface PatientSummaryService extends OpenmrsService {
 	public List<PatientSummaryTemplate> getAllPatientSummaryTemplates(boolean includeRetired);
 	
 	/**
-	 * @return the resulting patient summary result from evaluating the passed patient summary template for the given patient and parameters
+	 * @return the resulting patient summary result from evaluating the passed patient summary
+	 *         template for the given patient and EvaluationContext instance
+	 */
+	@Transactional(readOnly = true)
+	public PatientSummaryResult evaluatePatientSummaryTemplate(PatientSummaryTemplate patientSummaryTemplate,
+	        Integer patientId, EvaluationContext context);
+	
+	/**
+	 * @return the resulting patient summary result from evaluating the passed patient summary
+	 *         template for the given patient and parameters
 	 */
 	@Transactional(readOnly = true)
 	public PatientSummaryResult evaluatePatientSummaryTemplate(PatientSummaryTemplate patientSummaryTemplate, Integer patientId, Map<String, Object> parameters);
